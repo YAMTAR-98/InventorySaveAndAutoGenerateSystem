@@ -40,12 +40,6 @@ public class ProductionNode : MonoBehaviour, ISaveable
         lastProductionTimestamp = GetCurrentUnixTime();
     }
 
-    void Start()
-    {
-        // Calculate any offline production since the game was last closed.
-        //ComputeOfflineProduction();
-    }
-
     void Update()
     {
         // Update production continuously during runtime.
@@ -74,7 +68,6 @@ public class ProductionNode : MonoBehaviour, ISaveable
         {
             producedItemCount = Mathf.Min(maxCapacity, producedItemCount + intervalsPassed);
             lastProductionTimestamp += intervalsPassed * (long)productionInterval;
-            Debug.LogWarning($"[Offline] {producedItem.itemName} produced: {producedItemCount} (Node: {productionID})");
         }
         quantityText.text = producedItem.itemName + "\nCount: " + producedItemCount;
     }
@@ -93,7 +86,6 @@ public class ProductionNode : MonoBehaviour, ISaveable
             {
                 producedItemCount = Mathf.Min(maxCapacity, producedItemCount + intervals);
                 lastProductionTimestamp += intervals * (long)productionInterval;
-                Debug.LogWarning($"[Runtime] {producedItem.itemName} produced: {producedItemCount} (Node: {productionID})");
                 quantityText.text = producedItem.itemName + "\nCount: " + producedItemCount;
             }
         }
@@ -142,11 +134,18 @@ public class ProductionNode : MonoBehaviour, ISaveable
     /// </summary>
     public void RestoreState(string state)
     {
-        ProductionData data = JsonUtility.FromJson<ProductionData>(state);
-        producedItemCount = data.producedItemCount;
-        lastProductionTimestamp = data.lastProductionTimestamp;
-        ComputeOfflineProduction();
-        Debug.LogWarning($"Production node ({productionID}) restored. Produced: {producedItemCount} {producedItem.itemName}");
+        try
+        {
+            ProductionData data = JsonUtility.FromJson<ProductionData>(state);
+            producedItemCount = data.producedItemCount;
+            lastProductionTimestamp = data.lastProductionTimestamp;
+            ComputeOfflineProduction();
+            Debug.LogWarning($"Production node ({productionID}) restored. Produced: {producedItemCount} {producedItem.itemName}");
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error restoring ProductionNode state: " + ex.Message);
+        }
     }
 
     public string ClearAll()

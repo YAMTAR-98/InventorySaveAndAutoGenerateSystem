@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 public class LevelManager : MonoBehaviour, ISaveable
@@ -88,11 +89,18 @@ public class LevelManager : MonoBehaviour, ISaveable
     // Restores the state from a JSON string and recalculates the XP requirement.
     public void RestoreState(string state)
     {
-        LevelData data = JsonUtility.FromJson<LevelData>(state);
-        CurrentXP = data.currentXP;
-        RecalculateXPRequirement();
-        Debug.Log($"Loaded Level: {CurrentLevel}, XP: {CurrentXP}, Next level requires: {XPRequiredForNextLevel}");
-        UpdateUIManager();
+        try
+        {
+            LevelData data = JsonUtility.FromJson<LevelData>(state);
+            CurrentXP = data.currentXP;
+            RecalculateXPRequirement();
+            Debug.Log($"Loaded Level: {CurrentLevel}, XP: {CurrentXP}, Next level requires: {XPRequiredForNextLevel}");
+            UpdateUIManager();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error restoring LevelManager state: " + ex.Message);
+        }
     }
     public string ClearAll()
     {
@@ -106,7 +114,7 @@ public class LevelManager : MonoBehaviour, ISaveable
     /// </summary>
     private void UpdateUIManager()
     {
-        uI_Manager.SetXpText(CurrentXP);
+        uI_Manager.SetXpText((int)CurrentXP);
     }
 
 

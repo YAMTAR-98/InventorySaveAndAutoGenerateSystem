@@ -107,10 +107,17 @@ public class InventoryManager : MonoBehaviour, ISaveable
     // ISaveable implementation: Restores the inventory state from a JSON string.
     public void RestoreState(string state)
     {
-        Inventory loadedInventory = JsonUtility.FromJson<Inventory>(state);
-        inventory.currency = loadedInventory.currency;
-        inventory.items = loadedInventory.items;
-        OnInventoryChanged?.Invoke();
+        try
+        {
+            Inventory loadedInventory = JsonUtility.FromJson<Inventory>(state);
+            inventory.currency = loadedInventory.currency;
+            inventory.items = loadedInventory.items;
+            OnInventoryChanged?.Invoke();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error restoring Inventory state: " + ex.Message);
+        }
     }
 
     public string ClearAll()

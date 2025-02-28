@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 [System.Serializable]
@@ -67,9 +68,16 @@ public class PlayerManager : MonoBehaviour, ISaveable
     /// <param name="state">The JSON string representing the saved player state.</param>
     public void RestoreState(string state)
     {
-        playerData = JsonUtility.FromJson<PlayerData>(state);
-        Debug.Log("Player data restored: " + playerData.playerName + ", Level: " + playerData.level);
-        UpdateUI();
+        try
+        {
+            playerData = JsonUtility.FromJson<PlayerData>(state);
+            Debug.Log("Player data restored: " + playerData.playerName + ", Level: " + playerData.level);
+            UpdateUI();
+        }
+        catch (Exception ex)
+        {
+            Debug.LogError("Error restoring PlayerManager state: " + ex.Message);
+        }
     }
 
     /// <summary>
