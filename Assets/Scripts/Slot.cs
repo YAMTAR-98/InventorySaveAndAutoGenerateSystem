@@ -7,6 +7,8 @@ public class Slot : MonoBehaviour
     public Image slotImage;
     public TMP_Text quantityText;
     public TMP_Text itemNameText;
+    internal ItemSO Item;
+    internal InventoryManager InventoryManager;
 
     // Sets the background color of the slot.
     public void SetColor(Color color)
@@ -27,5 +29,9 @@ public class Slot : MonoBehaviour
     {
         if (itemNameText != null)
             itemNameText.text = name;
+    }
+    public void RemoveItem()
+    {
+        InventoryManager.RemoveItem(Item, 1);
     }
 }

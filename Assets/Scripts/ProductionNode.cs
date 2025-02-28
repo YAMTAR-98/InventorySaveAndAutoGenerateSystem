@@ -108,7 +108,7 @@ public class ProductionNode : MonoBehaviour, ISaveable
         int collected = producedItemCount;
         producedItemCount = 0;
         Debug.Log($"Collected {collected} {producedItem.itemName} from node: {productionID}");
-        InventoryManager.AddItem(producedItem, producedItemCount);
+        InventoryManager.AddItem(producedItem, collected);
         quantityText.text = producedItem.itemName + "\nCount: " + producedItemCount;
     }
 
@@ -147,6 +147,13 @@ public class ProductionNode : MonoBehaviour, ISaveable
         lastProductionTimestamp = data.lastProductionTimestamp;
         ComputeOfflineProduction();
         Debug.LogWarning($"Production node ({productionID}) restored. Produced: {producedItemCount} {producedItem.itemName}");
+    }
+
+    public string ClearAll()
+    {
+        producedItemCount = 0;
+        quantityText.text = producedItem.itemName + "\nCount: " + producedItemCount;
+        return producedItemCount.ToString();
     }
 
     #endregion

@@ -58,10 +58,8 @@ public class SaveLoadManager : MonoBehaviour
     public void LoadAll()
     {
         if (!File.Exists(filePath))
-        {
-            Debug.LogWarning("No save file found at: " + filePath);
             return;
-        }
+
         string json = File.ReadAllText(filePath);
         SaveDataWrapper wrapper = JsonUtility.FromJson<SaveDataWrapper>(json);
 
@@ -80,6 +78,20 @@ public class SaveLoadManager : MonoBehaviour
             }
         }
         Debug.Log("Game loaded from: " + filePath);
+    }
+    [ContextMenu("Clear Save File")]
+    public void ClearSaveFile()
+    {
+        if (!File.Exists(filePath))
+            return;
+        Dictionary<string, string> state = new Dictionary<string, string>();
+        foreach (var saveable in saveables)
+        {
+            state[saveable.UniqueIdentifier] = saveable.ClearAll();
+        }
+        // Write an empty string to the file, effectively clearing it.
+        File.WriteAllText(filePath, "");
+        Debug.Log("Save file cleared at: " + filePath);
     }
 }
 

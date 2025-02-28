@@ -88,4 +88,12 @@ public class PlayerManager : MonoBehaviour, ISaveable
         uiManager.SetPlayerName(playerData.playerName);
         uiManager.SetLevelText(playerData.level);
     }
+
+    public string ClearAll()
+    {
+        playerData.playerName = "player";
+        playerData.level = 0;
+        UpdateUI();
+        return playerData.playerName + playerData.level.ToString();
+    }
 }

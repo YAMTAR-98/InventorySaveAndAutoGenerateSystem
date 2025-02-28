@@ -14,10 +14,17 @@ public class InventorySave : MonoBehaviour, ISaveable
         return JsonUtility.ToJson(inventory);
     }
 
+
+
     // Restores the inventory state from a JSON string.
     public void RestoreState(string state)
     {
         inventory = JsonUtility.FromJson<Inventory>(state);
         Debug.Log("Inventory restored. Currency: " + inventory.currency);
+    }
+
+    string ISaveable.ClearAll()
+    {
+        throw new System.NotImplementedException();
     }
 }

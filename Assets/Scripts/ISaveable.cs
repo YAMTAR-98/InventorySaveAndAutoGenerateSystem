@@ -8,4 +8,6 @@ public interface ISaveable
 
     // Restores the object's state from the provided JSON string.
     void RestoreState(string state);
+
+    string ClearAll();
 }

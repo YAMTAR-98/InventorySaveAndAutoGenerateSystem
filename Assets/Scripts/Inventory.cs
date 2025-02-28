@@ -46,12 +46,13 @@ public class Inventory
         if (existingItem != null)
         {
             existingItem.quantity += qty;
+            Debug.Log("Added item: " + itemData.itemName + " | New Quantity: " + existingItem.quantity);
         }
         else
         {
             items.Add(new Item(itemData, qty));
+            Debug.Log("Added item: " + itemData.itemName + " | Quantity: " + qty);
         }
-        Debug.Log("Added item: " + itemData.itemName + " | Quantity: " + qty);
     }
 
     // Method to remove an item from the inventory using ItemSO.
@@ -65,7 +66,7 @@ public class Inventory
             {
                 items.Remove(existingItem);
             }
-            Debug.Log("Removed item: " + itemData.itemName + " | Quantity: " + qty);
+            Debug.Log("Removed item: " + itemData.itemName + " | Quantity removed: " + qty);
             return true;
         }
         else
@@ -74,7 +75,17 @@ public class Inventory
             return false;
         }
     }
+    public bool ClearAllData()
+    {
+        items.Clear();
+        currency = 0;
+        if (items.Count > 0)
+            return true;
+        else
+            return false;
+    }
 }
+
 
 [System.Serializable]
 public class Item

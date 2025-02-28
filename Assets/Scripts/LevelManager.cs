@@ -94,7 +94,12 @@ public class LevelManager : MonoBehaviour, ISaveable
         Debug.Log($"Loaded Level: {CurrentLevel}, XP: {CurrentXP}, Next level requires: {XPRequiredForNextLevel}");
         UpdateUIManager();
     }
-
+    public string ClearAll()
+    {
+        CurrentXP = 0;
+        UpdateUIManager();
+        return CurrentXP.ToString();
+    }
     #region UI Update
     /// <summary>
     /// Test code to update the UI with the current XP.
@@ -103,5 +108,7 @@ public class LevelManager : MonoBehaviour, ISaveable
     {
         uI_Manager.SetXpText(CurrentXP);
     }
+
+
     #endregion
 }

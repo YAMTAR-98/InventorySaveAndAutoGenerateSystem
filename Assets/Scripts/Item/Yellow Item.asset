@@ -13,3 +13,4 @@ MonoBehaviour:
   m_Name: Yellow Item
   m_EditorClassIdentifier: 
   itemName: Yellow Item
+  color: {r: 1, g: 0.9176218, b: 0, a: 0.78431374}
