@@ -108,7 +108,7 @@ public class ProductionNode : MonoBehaviour, ISaveable
         int collected = producedItemCount;
         producedItemCount = 0;
         Debug.Log($"Collected {collected} {producedItem.itemName} from node: {productionID}");
-        InventoryManager.AddItem(producedItem.itemName, producedItemCount, producedItem);
+        InventoryManager.AddItem(producedItem, producedItemCount);
         quantityText.text = producedItem.itemName + "\nCount: " + producedItemCount;
     }
 

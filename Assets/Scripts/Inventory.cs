@@ -6,7 +6,7 @@ public class Inventory
 {
     // Currency value (e.g., gold, credits, etc.)
     public float currency;
-    // Items contained in the inventory
+    // List of items contained in the inventory.
     public List<Item> items;
 
     public Inventory()
@@ -15,14 +15,14 @@ public class Inventory
         items = new List<Item>();
     }
 
-    // Method to add currency
+    // Method to add currency.
     public void AddCurrency(float amount)
     {
         currency += amount;
         Debug.Log("Added currency: " + amount + " | Total: " + currency);
     }
 
-    // Method to spend currency
+    // Method to spend currency.
     public bool SpendCurrency(float amount)
     {
         if (currency >= amount)
@@ -38,26 +38,26 @@ public class Inventory
         }
     }
 
-    // Method to add an item to the inventory
-    public void AddItem(string name, int qty)
+    // Method to add an item to the inventory using ItemSO.
+    public void AddItem(ItemSO itemData, int qty)
     {
-        // If an item with the same name exists, increase its quantity; otherwise, add a new item.
-        Item existingItem = items.Find(item => item.itemName == name);
+        // If an item with the same ItemSO reference exists, increase its quantity; otherwise, add a new item.
+        Item existingItem = items.Find(item => item.itemData == itemData);
         if (existingItem != null)
         {
             existingItem.quantity += qty;
         }
         else
         {
-            items.Add(new Item(name, qty));
+            items.Add(new Item(itemData, qty));
         }
-        Debug.Log("Added item: " + name + " | Quantity: " + qty);
+        Debug.Log("Added item: " + itemData.itemName + " | Quantity: " + qty);
     }
 
-    // Method to remove an item from the inventory
-    public bool RemoveItem(string name, int qty)
+    // Method to remove an item from the inventory using ItemSO.
+    public bool RemoveItem(ItemSO itemData, int qty)
     {
-        Item existingItem = items.Find(item => item.itemName == name);
+        Item existingItem = items.Find(item => item.itemData == itemData);
         if (existingItem != null && existingItem.quantity >= qty)
         {
             existingItem.quantity -= qty;
@@ -65,12 +65,12 @@ public class Inventory
             {
                 items.Remove(existingItem);
             }
-            Debug.Log("Removed item: " + name + " | Quantity: " + qty);
+            Debug.Log("Removed item: " + itemData.itemName + " | Quantity: " + qty);
             return true;
         }
         else
         {
-            Debug.Log("Insufficient " + name + " found!");
+            Debug.Log("Insufficient " + itemData.itemName + " found!");
             return false;
         }
     }
@@ -79,12 +79,14 @@ public class Inventory
 [System.Serializable]
 public class Item
 {
-    public string itemName;
+    // Reference to the ScriptableObject that defines this item.
+    public ItemSO itemData;
+    // The quantity of the item.
     public int quantity;
 
-    public Item(string itemName, int quantity)
+    public Item(ItemSO itemData, int quantity)
     {
-        this.itemName = itemName;
+        this.itemData = itemData;
         this.quantity = quantity;
     }
 }

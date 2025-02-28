@@ -557,6 +557,11 @@ MonoBehaviour:
     currency: 0
     items: []
   uI_Manager: {fileID: 923502033}
+  Slot: {fileID: -5556023179309182441, guid: 0936f0ae2e0287440a71d061ebc4b72f, type: 3}
+  Items:
+  - {fileID: 11400000, guid: c7b0ae8fd920ca941bfdb92808323010, type: 2}
+  - {fileID: 11400000, guid: cf03f9e732bcc9c4f811c2b457f8ad03, type: 2}
+  - {fileID: 11400000, guid: 291a819781b309b41a248f4224a96ae2, type: 2}
 --- !u!1 &497333470
 GameObject:
   m_ObjectHideFlags: 0
