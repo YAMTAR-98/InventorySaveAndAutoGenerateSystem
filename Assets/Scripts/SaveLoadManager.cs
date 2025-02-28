@@ -33,6 +33,10 @@ public class SaveLoadManager : MonoBehaviour
     {
         LoadAll();
     }
+    private void OnApplicationQuit()
+    {
+        SaveAll();
+    }
 
     // Saves the state of all saveable objects.
     [ContextMenu("Save Game")]

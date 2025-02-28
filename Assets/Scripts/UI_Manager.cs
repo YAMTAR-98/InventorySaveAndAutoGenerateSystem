@@ -38,7 +38,7 @@ public class UIManager : MonoBehaviour
     /// <param name="currentXP">The current XP.</param>
     public void SetXpText(float currentXP)
     {
-        xpText.text = currentXP.ToString();
+        xpText.text = "XP: " + currentXP.ToString();
     }
 
     /// <summary>
@@ -47,7 +47,7 @@ public class UIManager : MonoBehaviour
     /// <param name="currentLevel">The current level.</param>
     public void SetLevelText(int currentLevel)
     {
-        levelText.text = currentLevel.ToString();
+        levelText.text = "LEVEL: " + currentLevel.ToString();
     }
 
     /// <summary>
@@ -56,6 +56,6 @@ public class UIManager : MonoBehaviour
     /// <param name="currentCurrency">The current currency value.</param>
     public void SetCurrencyText(float currentCurrency)
     {
-        currencyText.text = currentCurrency.ToString();
+        currencyText.text = "MONEY: " + currentCurrency.ToString();
     }
 }

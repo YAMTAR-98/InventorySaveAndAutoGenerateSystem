@@ -6,8 +6,10 @@ public class InventoryManager : MonoBehaviour, ISaveable
     public Inventory inventory;
     // Reference to the UI manager.
     public UIManager uI_Manager;
+    public Slot Slot;
     // Unique identifier for saving/loading.
     public string UniqueIdentifier => "Inventory";
+
 
     void Awake()
     {
@@ -19,8 +21,9 @@ public class InventoryManager : MonoBehaviour, ISaveable
     {
         // Add sample data at the start of the game.
         inventory.AddCurrency(100);           // Add 100 currency.
-        inventory.AddItem("Apple", 5);          // Add 5 Apples.
-        inventory.AddItem("Red Apple", 3);      // Add 3 Red Apples.
+        inventory.AddItem("Red Item", 5);          // Add 5 Apples.
+        inventory.AddItem("Blue Item", 3);      // Add 3 Red Apples.
+        inventory.AddItem("Yellow Item", 10);      // Add 3 Red Apples.
 
         // Print the current inventory to the console.
         PrintInventory();
@@ -74,14 +77,18 @@ public class InventoryManager : MonoBehaviour, ISaveable
         PrintInventory();
     }
 
-    private void AddItem(string name, int qty)
+    internal void AddItem(string name, int qty, ItemSO item = null)
     {
+        if (item != null)
+        {
+
+        }
         inventory.AddItem(name, qty);
         Debug.Log(qty + " " + name + " added.");
         PrintInventory();
     }
 
-    private void RemoveItem(string name, int qty)
+    internal void RemoveItem(string name, int qty)
     {
         if (inventory.RemoveItem(name, qty))
             Debug.Log(qty + " " + name + " removed.");
