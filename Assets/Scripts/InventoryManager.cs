@@ -2,112 +2,121 @@ using UnityEngine;
 
 public class InventoryManager : MonoBehaviour, ISaveable
 {
-    // Oyun içerisindeki envanter örneğimiz
+    // Our in-game inventory instance.
     public Inventory inventory;
-    public UI_Manager uI_Manager;
+    // Reference to the UI manager.
+    public UIManager uI_Manager;
+    // Unique identifier for saving/loading.
     public string UniqueIdentifier => "Inventory";
 
     void Awake()
     {
-        // Oyun başladığında envanteri başlatıyoruz.
+        // Initialize the inventory when the game starts.
         inventory = new Inventory();
     }
 
     void Start()
     {
-        // Oyunun başlangıcında örnek veriler ekleyelim
-        inventory.AddCurrency(100);              // 100 para ekle
-        inventory.AddItem("Elma", 5);              // 5 adet Elma ekle
-        inventory.AddItem("Kırmızı Elma", 3);        // 3 adet Kırmızı Elma ekle
+        // Add sample data at the start of the game.
+        inventory.AddCurrency(100);           // Add 100 currency.
+        inventory.AddItem("Apple", 5);          // Add 5 Apples.
+        inventory.AddItem("Red Apple", 3);      // Add 3 Red Apples.
 
-        // Envanteri konsola yazdır
+        // Print the current inventory to the console.
         PrintInventory();
     }
 
     void Update()
     {
-        // Test amaçlı tuş kontrolleri:
-        // "A" tuşu: 50 para ekler.
+#if UNITY_EDITOR
+        // Test key controls:
+        // Pressing "A" adds 50 currency.
         if (Input.GetKeyDown(KeyCode.A))
         {
             AddCurrency(50);
         }
 
-        // "S" tuşu: 30 para harcar.
+        // Pressing "S" spends 30 currency.
         if (Input.GetKeyDown(KeyCode.S))
         {
             SpendCurrency(30);
         }
 
-        // "D" tuşu: 1 adet Elma ekler.
+        // Pressing "D" adds 1 Apple.
         if (Input.GetKeyDown(KeyCode.D))
         {
             AddItem("Apple", 1);
         }
 
-        // "F" tuşu: 1 adet Elma çıkarır.
+        // Pressing "F" removes 1 Apple.
         if (Input.GetKeyDown(KeyCode.F))
         {
             RemoveItem("Apple", 1);
         }
+#endif
     }
+
     private void AddCurrency(int value)
     {
         inventory.AddCurrency(value);
-        Debug.Log(value + " para eklendi.");
-        Update_UI_Manager();
+        Debug.Log(value + " currency added.");
+        UpdateUIManager();
         PrintInventory();
     }
+
     private void SpendCurrency(int value)
     {
         if (inventory.SpendCurrency(value))
-            Debug.Log(value + " para harcandı.");
+            Debug.Log(value + " currency spent.");
         else
-            Debug.Log("Yetersiz bakiye!");
-        Update_UI_Manager();
+            Debug.Log("Insufficient balance!");
+        UpdateUIManager();
         PrintInventory();
     }
+
     private void AddItem(string name, int qty)
     {
         inventory.AddItem(name, qty);
-        Debug.Log(qty + name + " added.");
+        Debug.Log(qty + " " + name + " added.");
         PrintInventory();
     }
+
     private void RemoveItem(string name, int qty)
     {
         if (inventory.RemoveItem(name, qty))
-            Debug.Log(qty + name + " removed.");
+            Debug.Log(qty + " " + name + " removed.");
         else
-            Debug.Log("Çıkarılacak Elma bulunamadı!");
+            Debug.Log("No " + name + " available to remove!");
         PrintInventory();
     }
 
     #region UI Test
     /// <summary>
-    /// This is a Test Code
+    /// Test code to update the UI.
     /// </summary>
-    private void Update_UI_Manager()
+    private void UpdateUIManager()
     {
         uI_Manager.SetCurrencyText(inventory.currency);
     }
     #endregion
 
-    // Envanterin mevcut durumunu konsola yazdıran yardımcı metod
+    // Helper method to print the current state of the inventory to the console.
     void PrintInventory()
     {
-        Debug.Log("Güncel Para: " + inventory.currency);
+        Debug.Log("Current Currency: " + inventory.currency);
         foreach (var item in inventory.items)
         {
-            Debug.Log("Eşya: " + item.itemName + " | Miktar: " + item.quantity);
+            Debug.Log("Item: " + item.itemName + " | Quantity: " + item.quantity);
         }
     }
 
+    // Capture the current state of the inventory as a JSON string.
     public string CaptureState()
     {
         return JsonUtility.ToJson(inventory);
     }
 
-    // Kaydedilmiş JSON string'inden Inventory durumunu geri yükler
+    // Restore the inventory state from a JSON string.
     public void RestoreState(string state)
     {
         Inventory loadedInventory = JsonUtility.FromJson<Inventory>(state);
@@ -117,7 +126,7 @@ public class InventoryManager : MonoBehaviour, ISaveable
         uI_Manager.SetCurrencyText(inventory.currency);
     }
 
-    // İsteğe bağlı: Inventory üzerinde çalışma yapabilmek için public erişim sağlayabilirsiniz.
+    // Optional: Provides public access to the inventory instance.
     public Inventory GetInventory()
     {
         return inventory;

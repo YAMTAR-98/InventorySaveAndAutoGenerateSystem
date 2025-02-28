@@ -4,10 +4,10 @@ using UnityEngine;
 
 public class SaveLoadManager : MonoBehaviour
 {
-    // Inspector üzerinden kaydedilecek komponentleri atayabileceğimiz liste
+    // List of components to be saved, assignable via the Inspector.
     [SerializeField] private List<MonoBehaviour> saveableComponents;
 
-    // İçeride ISaveable arayüzünü implemente eden objeleri tutuyoruz
+    // List to store objects that implement the ISaveable interface.
     private List<ISaveable> saveables = new List<ISaveable>();
     private string filePath;
 
@@ -15,7 +15,7 @@ public class SaveLoadManager : MonoBehaviour
     {
         filePath = Application.persistentDataPath + "/gamedata.json";
 
-        // Inspector'dan atanan her komponentin ISaveable olup olmadığını kontrol ediyoruz
+        // Verify that each component assigned in the Inspector implements ISaveable.
         foreach (var component in saveableComponents)
         {
             if (component is ISaveable saveable)
@@ -24,16 +24,17 @@ public class SaveLoadManager : MonoBehaviour
             }
             else
             {
-                Debug.LogWarning($"{component.name} ISaveable implement etmiyor!");
+                Debug.LogWarning($"{component.name} does not implement ISaveable!");
             }
         }
     }
+
     private void Start()
     {
         LoadAll();
     }
 
-    // Tüm saveable objelerin durumunu kaydeder
+    // Saves the state of all saveable objects.
     [ContextMenu("Save Game")]
     public void SaveAll()
     {
@@ -48,7 +49,7 @@ public class SaveLoadManager : MonoBehaviour
         Debug.Log("Game saved at: " + filePath);
     }
 
-    // Kaydedilmiş veriden tüm saveable objeleri geri yükler
+    // Loads the state of all saveable objects from the saved data.
     [ContextMenu("Load Game")]
     public void LoadAll()
     {
@@ -59,13 +60,14 @@ public class SaveLoadManager : MonoBehaviour
         }
         string json = File.ReadAllText(filePath);
         SaveDataWrapper wrapper = JsonUtility.FromJson<SaveDataWrapper>(json);
-        // Wrapper içindeki verileri sözlüğe dönüştürüyoruz
+
+        // Convert the wrapper's data back into a dictionary.
         Dictionary<string, string> state = new Dictionary<string, string>();
         for (int i = 0; i < wrapper.keys.Count; i++)
         {
             state[wrapper.keys[i]] = wrapper.values[i];
         }
-        // Her saveable objeye ait kaydedilmiş durumu geri yüklüyoruz
+        // Restore the saved state for each saveable object.
         foreach (var saveable in saveables)
         {
             if (state.TryGetValue(saveable.UniqueIdentifier, out string savedState))

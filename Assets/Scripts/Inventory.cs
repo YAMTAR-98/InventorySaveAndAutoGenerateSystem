@@ -4,9 +4,9 @@ using UnityEngine;
 [System.Serializable]
 public class Inventory
 {
-    // Para birimi değeri (örneğin, altın, kredi vb.)
+    // Currency value (e.g., gold, credits, etc.)
     public float currency;
-    // Envanterdeki eşyalar
+    // Items contained in the inventory
     public List<Item> items;
 
     public Inventory()
@@ -15,33 +15,33 @@ public class Inventory
         items = new List<Item>();
     }
 
-    // Para eklemek için
+    // Method to add currency
     public void AddCurrency(float amount)
     {
         currency += amount;
-        Debug.Log("Eklenen para: " + amount + " | Toplam: " + currency);
+        Debug.Log("Added currency: " + amount + " | Total: " + currency);
     }
 
-    // Para harcamak için
+    // Method to spend currency
     public bool SpendCurrency(float amount)
     {
         if (currency >= amount)
         {
             currency -= amount;
-            Debug.Log("Harcanan para: " + amount + " | Kalan: " + currency);
+            Debug.Log("Spent currency: " + amount + " | Remaining: " + currency);
             return true;
         }
         else
         {
-            Debug.Log("Yetersiz bakiye!");
+            Debug.Log("Insufficient balance!");
             return false;
         }
     }
 
-    // Envantere eşya ekleme
+    // Method to add an item to the inventory
     public void AddItem(string name, int qty)
     {
-        // Aynı isimde eşya varsa miktarını artır, yoksa yeni eşya ekle
+        // If an item with the same name exists, increase its quantity; otherwise, add a new item.
         Item existingItem = items.Find(item => item.itemName == name);
         if (existingItem != null)
         {
@@ -51,10 +51,10 @@ public class Inventory
         {
             items.Add(new Item(name, qty));
         }
-        Debug.Log("Eklenen eşya: " + name + " | Miktar: " + qty);
+        Debug.Log("Added item: " + name + " | Quantity: " + qty);
     }
 
-    // Envanterden eşya çıkarma
+    // Method to remove an item from the inventory
     public bool RemoveItem(string name, int qty)
     {
         Item existingItem = items.Find(item => item.itemName == name);
@@ -65,12 +65,12 @@ public class Inventory
             {
                 items.Remove(existingItem);
             }
-            Debug.Log("Çıkarılan eşya: " + name + " | Miktar: " + qty);
+            Debug.Log("Removed item: " + name + " | Quantity: " + qty);
             return true;
         }
         else
         {
-            Debug.Log("Yeterli " + name + " bulunamadı!");
+            Debug.Log("Insufficient " + name + " found!");
             return false;
         }
     }

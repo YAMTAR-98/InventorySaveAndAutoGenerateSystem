@@ -2,19 +2,19 @@ using UnityEngine;
 
 public class InventorySave : MonoBehaviour, ISaveable
 {
-    // Envanter örneğimiz; Inspector'dan düzenlenebilir veya kod ile yönetilebilir.
+    // Our inventory instance; can be configured via the Inspector or managed programmatically.
     public Inventory inventory = new Inventory();
 
-    // Her saveable için benzersiz bir tanımlayıcı gereklidir.
+    // Unique identifier required for each saveable object.
     public string UniqueIdentifier => "Inventory";
 
-    // Durum bilgisini JSON formatında yakalar.
+    // Captures the inventory's state in JSON format.
     public string CaptureState()
     {
         return JsonUtility.ToJson(inventory);
     }
 
-    // Kaydedilmiş JSON verisini kullanarak envanteri eski haline getirir.
+    // Restores the inventory state from a JSON string.
     public void RestoreState(string state)
     {
         inventory = JsonUtility.FromJson<Inventory>(state);

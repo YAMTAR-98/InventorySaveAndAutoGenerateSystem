@@ -1,6 +1,5 @@
 using UnityEngine;
 
-// SRP: Sadece oyuncu verilerini tutar.
 [System.Serializable]
 public class PlayerData
 {
@@ -14,69 +13,79 @@ public class PlayerData
     }
 }
 
-// DIP: PlayerManager, veri kaydetme gibi detaylara bağlı olmadan sadece oyuncu verisinin iş mantığını yönetir.
-// Aynı zamanda ISaveable arayüzünü implement ederek kaydetme/yükleme işlemlerini destekler.
+/// <summary>
+/// Manages player data and encapsulates player logic.
+/// Implements ISaveable for persistence operations, adhering to DIP and SRP.
+/// </summary>
 public class PlayerManager : MonoBehaviour, ISaveable
 {
     private PlayerData playerData;
-    public UI_Manager uI_Manager;
+    public UIManager uiManager;
 
-    // ISaveable için benzersiz tanımlayıcı
-    public string UniqueIdentifier => "Player Data";
+    // Unique identifier for save/load operations.
+    public string UniqueIdentifier => "PlayerData";
 
     void Awake()
     {
-        // Oyunun başlangıcında, veri kaydetme sistemi olmadan varsayılan bir oyuncu oluşturuyoruz.
+        // Initialize the player with default values at the start of the game.
         playerData = new PlayerData("Player1", 1);
         Debug.Log("Player initialized: " + playerData.playerName + ", Level: " + playerData.level);
     }
 
-    // Oyuncu adını güncelleme metodu
+    /// <summary>
+    /// Updates the player's name using input from the UI.
+    /// </summary>
     public void UpdatePlayerName()
     {
-        playerData.playerName = uI_Manager.input.text;
+        playerData.playerName = uiManager.nameInputField.text;
         Debug.Log("Player name updated to: " + playerData.playerName);
-
-        Update_UI_Manager();
+        UpdateUI();
     }
 
-    // Oyuncu seviyesini güncelleme metodu
-    public void UpdatePlayerLevel(int CurrentLevel)
+    /// <summary>
+    /// Increments the player's level.
+    /// </summary>
+    /// <param name="levelIncrement">The amount to increase the player's level by.</param>
+    public void UpdatePlayerLevel(int levelIncrement)
     {
-        playerData.level += CurrentLevel;
+        playerData.level += levelIncrement;
         Debug.Log("Player level updated to: " + playerData.level);
-
-        Update_UI_Manager();
+        UpdateUI();
     }
 
-    // ISaveable: PlayerData nesnesinin durumunu JSON formatında yakalar.
+    /// <summary>
+    /// Captures the current player state as a JSON string.
+    /// </summary>
     public string CaptureState()
     {
         return JsonUtility.ToJson(GetPlayerData());
     }
 
-    // ISaveable: Kaydedilmiş JSON string'inden PlayerData nesnesini geri yükler.
+    /// <summary>
+    /// Restores the player state from a JSON string.
+    /// </summary>
+    /// <param name="state">The JSON string representing the saved player state.</param>
     public void RestoreState(string state)
     {
         playerData = JsonUtility.FromJson<PlayerData>(state);
         Debug.Log("Player data restored: " + playerData.playerName + ", Level: " + playerData.level);
-
-        Update_UI_Manager();
+        UpdateUI();
     }
+
+    /// <summary>
+    /// Retrieves the current player data.
+    /// </summary>
     private PlayerData GetPlayerData()
     {
         return playerData;
     }
 
-    #region UI Test
     /// <summary>
-    /// This is a Test Code
+    /// Updates the UI elements with the current player data.
     /// </summary>
-
-    private void Update_UI_Manager()
+    private void UpdateUI()
     {
-        uI_Manager.SetPlayerName(playerData.playerName);
-        uI_Manager.SetLevelText(playerData.level);
+        uiManager.SetPlayerName(playerData.playerName);
+        uiManager.SetLevelText(playerData.level);
     }
-    #endregion
 }

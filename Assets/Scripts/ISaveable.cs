@@ -1,11 +1,11 @@
 public interface ISaveable
 {
-    // Her kaydedilebilir objenin benzersiz bir tanımlayıcısı olmalı
+    // Each saveable object must have a unique identifier.
     string UniqueIdentifier { get; }
 
-    // Durum bilgisini JSON string olarak döndürür
+    // Returns the object's state as a JSON string.
     string CaptureState();
 
-    // JSON string halindeki durumu kullanarak objeyi eski haline getirir
+    // Restores the object's state from the provided JSON string.
     void RestoreState(string state);
 }

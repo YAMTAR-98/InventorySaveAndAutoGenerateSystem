@@ -4,36 +4,58 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class UI_Manager : MonoBehaviour
+/// <summary>
+/// Provides functionality for updating and displaying UI elements.
+/// </summary>
+public class UIManager : MonoBehaviour
 {
-    /// <summary>
-    /// This is a testCode
-    /// </summary>
-    public TMP_InputField input;
-    public TMP_Text playerName;
-    public TMP_Text XP_Text;
-    public TMP_Text Level_Text;
-    public TMP_Text Currency_Text;
+    [SerializeField] public TMP_InputField nameInputField;
+    [SerializeField] public TMP_Text playerNameText;
+    [SerializeField] public TMP_Text xpText;
+    [SerializeField] public TMP_Text levelText;
+    [SerializeField] public TMP_Text currencyText;
 
-    public void ApplyNameChangeButton()
+    /// <summary>
+    /// Applies the name change using the text from the input field.
+    /// </summary>
+    public void ApplyNameChange()
     {
-        SetPlayerName(input.text);
+        SetPlayerName(nameInputField.text);
     }
+
+    /// <summary>
+    /// Updates the player's name in the UI.
+    /// </summary>
+    /// <param name="name">The new player name.</param>
     public void SetPlayerName(string name)
     {
-        playerName.text = name;
+        playerNameText.text = name;
     }
+
+    /// <summary>
+    /// Updates the XP display with the current XP value.
+    /// </summary>
+    /// <param name="currentXP">The current XP.</param>
     public void SetXpText(float currentXP)
     {
-        XP_Text.text = currentXP.ToString();
+        xpText.text = currentXP.ToString();
     }
+
+    /// <summary>
+    /// Updates the level display with the current level.
+    /// </summary>
+    /// <param name="currentLevel">The current level.</param>
     public void SetLevelText(int currentLevel)
     {
-        Level_Text.text = currentLevel.ToString();
+        levelText.text = currentLevel.ToString();
     }
+
+    /// <summary>
+    /// Updates the currency display with the current currency amount.
+    /// </summary>
+    /// <param name="currentCurrency">The current currency value.</param>
     public void SetCurrencyText(float currentCurrency)
     {
-        Currency_Text.text = currentCurrency.ToString();
+        currencyText.text = currentCurrency.ToString();
     }
 }
-
