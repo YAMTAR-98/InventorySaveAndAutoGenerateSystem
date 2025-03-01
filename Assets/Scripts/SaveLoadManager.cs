@@ -10,7 +10,7 @@ public class SaveLoadManager : MonoBehaviour
     // List to store objects that implement the ISaveable interface.
     private List<ISaveable> saveables = new List<ISaveable>();
     private string filePath;
-    public bool AutoSave;
+
 
     void Awake()
     {
@@ -35,11 +35,6 @@ public class SaveLoadManager : MonoBehaviour
         LoadAll();
     }
     private void OnApplicationQuit()
-    {
-        if (AutoSave)
-            SaveAll();
-    }
-    void OnApplicationPause(bool pause)
     {
         SaveAll();
     }
