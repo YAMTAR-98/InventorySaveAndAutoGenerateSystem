@@ -3036,7 +3036,7 @@ MonoBehaviour:
   - {fileID: 2081230440}
   - {fileID: 525055513}
   - {fileID: 1250714017}
-  AutoSave: 0
+  AutoSave: 1
 --- !u!4 &1247852474
 Transform:
   m_ObjectHideFlags: 0

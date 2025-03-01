@@ -39,6 +39,10 @@ public class SaveLoadManager : MonoBehaviour
         if (AutoSave)
             SaveAll();
     }
+    void OnApplicationPause(bool pause)
+    {
+        SaveAll();
+    }
 
     // Saves the state of all saveable objects.
     [ContextMenu("Save Game")]
